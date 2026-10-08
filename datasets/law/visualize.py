@@ -62,6 +62,16 @@ HTML = r'''<!doctype html>
 header{padding:20px 28px;background:white;border-bottom:1px solid #e2e8f0}h1{margin:0 0 12px;font-size:24px}
 button,select,input{font:inherit;padding:7px 12px;border:1px solid #cbd5e1;border-radius:6px;background:white;color:inherit}#distance{width:70px}.model-controls{margin-top:12px}.model-controls input{width:85px}#model-results{margin-bottom:22px;font-size:14px;line-height:1.6}#model-results table{width:100%;border-collapse:collapse}#model-results td,#model-results th{text-align:left;border-bottom:1px solid #e2e8f0;padding:5px 2px}#model-status{font-size:13px}
 button{cursor:pointer}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button:hover:not(:disabled){background:#f1f5f9}button:disabled{opacity:.5;cursor:default}button.primary{background:#2563eb;border-color:#2563eb;color:white}button.primary:hover:not(:disabled){background:#1d4ed8}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.graph-summary{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;font-size:13px;color:#64748b}
+dialog{width:min(600px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;padding:24px;border:1px solid #e2e8f0;border-radius:14px;color:#1e293b;background:white;box-shadow:0 24px 80px #0f172a40}
+dialog::backdrop{background:#0f172a66}.dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.dialog-heading h2{margin:0;font-size:21px}.dialog-heading button{font-size:22px;padding:2px 10px}
+dialog p{font-size:14px;line-height:1.6;color:#64748b}.dialog-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0}
+.case-options{display:grid;gap:10px}.case-options label{display:flex;align-items:center;gap:10px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer}.case-options input{margin:0;accent-color:#2563eb}
+.time-controls{display:grid;gap:16px;margin:20px 0}.time-controls label{display:grid;grid-template-columns:85px minmax(0,1fr) 42px;align-items:center;gap:8px}.time-controls input{width:100%;padding:0;accent-color:#2563eb}.time-controls output{text-align:right}#time-status{font-size:13px;color:#64748b}
+.model-controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.model-controls label{display:flex;flex-direction:column;gap:6px}.model-controls input,.model-controls select{width:100%}
+@media(max-width:450px){dialog{padding:16px}.model-controls{grid-template-columns:1fr}.dialog-actions button{flex:1}}
 header{flex-shrink:0}main{display:flex;flex:1;min-height:0}aside{padding:22px;overflow:auto;background:white;flex-shrink:0}
 #claims-panel{width:290px;border-right:1px solid #e2e8f0}#legend-panel{width:210px;border-left:1px solid #e2e8f0}
 .claim-group{margin:22px 0}.claim-group h3{font-size:14px;margin:0 0 12px;display:flex;align-items:center;gap:8px}.claim-list{list-style:none;margin:0;padding:0}.claim-list li{border-bottom:1px solid #e2e8f0;padding:0 0 12px;margin:0 0 12px;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.claim-id{display:block;font-weight:650;font-size:12px;color:#64748b;margin-bottom:4px}
@@ -73,21 +83,38 @@ aside p{font-size:13px;line-height:1.6;color:#64748b}#graph{flex:1;min-width:0;t
 @media(max-width:900px){#claims-panel{width:210px}#legend-panel{width:160px}aside{padding:12px}header{padding:12px}}
 @media(max-width:650px){main{flex-wrap:wrap;overflow:auto}#claims-panel{width:60%;max-height:220px;order:1}#legend-panel{width:40%;max-height:220px;order:2}#graph{order:3;flex-basis:100%;height:65vh;min-height:350px}}
 </style></head>
-<body><header><h1 id="heading">Law claim graphs</h1><div class="controls">
-<label>Case <select id="cases"></select></label><button id="fit">Fit view</button><button id="layout">Reset layout</button>
+<body><header><h1 id="heading">Law claim graphs</h1>
+<div class="controls">
+<button id="open-cases" class="primary" aria-haspopup="dialog" aria-controls="case-dialog">Select cases</button>
+<button id="open-model" aria-haspopup="dialog" aria-controls="model-dialog">Simulation options</button>
+<button id="fit">Fit view</button><button id="layout">Reset layout</button>
 <button id="in" aria-label="Zoom in">+</button><button id="out" aria-label="Zoom out">−</button>
 <label for="distance">Hop distance k <input id="distance" type="number" min="0" step="1" value="1"></label>
-<button id="clear">Clear selection</button><span id="selection" role="status" aria-live="polite"></span>
-<span id="count"></span></div>
-<div class="controls model-controls">
+<button id="clear">Clear selection</button></div>
+<div class="graph-summary"><span id="count"></span><span id="selection" role="status" aria-live="polite"></span></div></header>
+<dialog id="case-dialog" aria-labelledby="case-dialog-title" aria-describedby="case-dialog-help">
+<div class="dialog-heading"><h2 id="case-dialog-title">Select cases</h2><button type="button" data-close="case-dialog" aria-label="Close case selection">×</button></div>
+<p id="case-dialog-help">Choose a time range, then check the cases to show together. Changes update the graph immediately.</p>
+<div class="time-controls">
+<label for="time-start">Start year <input id="time-start" type="range" step="1"><output id="time-start-label" for="time-start"></output></label>
+<label for="time-end">End year <input id="time-end" type="range" step="1"><output id="time-end-label" for="time-end"></output></label>
+</div><p id="time-status" role="status" aria-live="polite"></p>
+<div id="cases" class="case-options" role="group" aria-label="Select cases"></div>
+<div class="dialog-actions"><button type="button" class="primary" data-close="case-dialog">Done</button></div>
+</dialog>
+<dialog id="model-dialog" aria-labelledby="model-dialog-title" aria-describedby="model-dialog-help">
+<div class="dialog-heading"><h2 id="model-dialog-title">Simulation options</h2><button type="button" data-close="model-dialog" aria-label="Close simulation options">×</button></div>
+<p id="model-dialog-help">Simulate the claims selected in the graph, or find influential claims across the selected cases.</p>
+<div class="model-controls">
 <label>Budget <input id="budget" type="number" min="0" step="1" value="3"></label>
 <label>Method <select id="method"><option value="greedy">Greedy</option><option value="random_search">Random search</option></select></label>
 <label>Simulations <input id="simulations" type="number" min="1" max="10000" step="1" value="200"></label>
 <label>Trials <input id="trials" type="number" min="1" max="10000" step="1" value="100"></label>
 <label>Random seed <input id="random-seed" type="number" step="1" value="7"></label>
 <label>Justice cutoff <input id="justice-cutoff" type="number" min="0" max="1" step="0.05" value="0.5"></label>
-<button id="simulate">Simulate selection</button><button id="optimize">Find influential claims</button>
-<span id="model-status" role="status" aria-live="polite"></span></div></header>
+</div><p id="model-status" role="status" aria-live="polite"></p>
+<div class="dialog-actions"><button id="simulate" class="primary">Simulate selection</button><button id="optimize">Find influential claims</button><button type="button" data-close="model-dialog">Close</button></div>
+</dialog>
 <main><aside id="claims-panel" aria-label="Selected claims"><h2>Model results</h2><div id="model-results" aria-live="polite"></div><h2>Selected claims</h2><div id="selected-claims"></div></aside>
 <svg id="graph" role="img" aria-label="Interactive claim graph">
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker></defs>
@@ -287,7 +314,7 @@ function renderSelectedClaims() {
         const list = document.createElement('ul'); list.className = 'claim-list';
         for (const claim of claims) {
             const item = document.createElement('li');
-            const id = document.createElement('span'); id.className = 'claim-id'; id.textContent = claim.id;
+            const id = document.createElement('span'); id.className = 'claim-id'; id.textContent = `${claim.caseLabel} · ${claim.originalId}`;
             item.append(id, document.createTextNode(claim.claim)); list.append(item);
         }
         section.append(heading, list); panel.append(section);
@@ -322,19 +349,33 @@ function applyBox(){svg.setAttribute('viewBox',`${box.x} ${box.y} ${box.w} ${box
 function fit(){const r=svg.getBoundingClientRect(),ratio=r.width/r.height||1;const xs=nodes.map(n=>n.x),ys=nodes.map(n=>n.y);for(const circle of view.querySelectorAll('.justice-groups circle')){const x=Number(circle.getAttribute('cx')),y=Number(circle.getAttribute('cy')),r=Number(circle.getAttribute('r'));xs.push(x-r,x+r);ys.push(y-r-30,y+r);}const left=Math.min(0,...xs)-100,top=Math.min(0,...ys)-100;const contentWidth=Math.max(200,...xs)-left+100,contentHeight=Math.max(200,...ys)-top+100;let w=contentWidth,h=contentHeight;if(w/h<ratio)w=h*ratio;else h=w/ratio;box={x:left-(w-contentWidth)/2,y:top-(h-contentHeight)/2,w,h};applyBox();}
 function zoom(factor,point){const p=point??{x:box.x+box.w/2,y:box.y+box.h/2};box={x:p.x+(box.x-p.x)*factor,y:p.y+(box.y-p.y)*factor,w:box.w*factor,h:box.h*factor};applyBox();}
 function point(event){return new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse());}
-function render(index){invalidateModel();selected.clear();hovered=null;drag=null;const c=cases[index],g=c.information;view.replaceChildren();$('justices').replaceChildren();$('types').replaceChildren();tip.style.display='none';$('heading').textContent=c.name??c.case_name??'Law claim graph';
+function selectedCaseIndices(){return [...$('cases').querySelectorAll('input:checked')].map(input=>Number(input.value));}
+function combinedGraph(indices) {
+    const graph={nodes:[],edges:[]};
+    for(const index of indices) {
+        const c=cases[index], name=c.name??c.case_name??`Case ${index+1}`;
+        const caseLabel=`${name}${c.time?` (${c.time})`:''}`, prefix=`${index}:`;
+        graph.nodes.push(...c.information.nodes.map(n=>({...n,id:prefix+n.id,originalId:n.id,caseIndex:index,caseLabel})));
+        graph.edges.push(...c.information.edges.map(e=>({...e,caseLabel,
+            sources:e.sources.map(id=>prefix+id),targets:e.targets.map(id=>prefix+id)})));
+    }
+    return graph;
+}
+function render(){invalidateModel();selected.clear();hovered=null;drag=null;const indices=selectedCaseIndices(),g=combinedGraph(indices);view.replaceChildren();$('justices').replaceChildren();$('types').replaceChildren();tip.style.display='none';$('heading').textContent=indices.length===1?(cases[indices[0]].name??cases[indices[0]].case_name):indices.length?`${indices.length} cases · Claims grouped by justice`:'No cases selected';
+for(const id of ['fit','layout','in','out','distance','clear']) $(id).disabled=!indices.length;
+$('simulate').disabled=$('optimize').disabled=!indices.length || !modelAPI || modelBusy;
 const justices=[...new Set(g.nodes.map(n=>n.justice))],types=[...new Set(g.edges.map(e=>e.type))],colors={},styles={};
 justices.forEach((j,i)=>{colors[j]=i<palette.length?palette[i]:`hsl(${i*137.508%360} 65% 38%)`;const row=document.createElement('div');row.className='legend';const dot=document.createElement('span');dot.className='swatch';dot.style.background=colors[j];row.append(dot,document.createTextNode(j));$('justices').append(row);});
 types.forEach((t,i)=>{styles[t]=known[t]??`${14+i*2} 5 2 5`;const row=document.createElement('div');row.className='legend';const icon=el('svg',{width:42,height:16},row);el('line',{x1:0,y1:8,x2:42,y2:8,stroke:'#64748b','stroke-width':2,'stroke-dasharray':styles[t]},icon);row.append(document.createTextNode(t));$('types').append(row);});
 nodes=g.nodes.map(n=>({...n,color:colors[n.justice],x:0,y:0}));const byId=new Map(nodes.map(n=>[n.id,n]));links=[];
 const edgeLayer=el('g',{},view),nodeLayer=el('g',{},view),pairs=new Map();
-for(const e of g.edges)for(const s of e.sources)for(const t of e.targets){const key=JSON.stringify([s,t].sort()),order=pairs.get(key)??0;pairs.set(key,order+1);const line=el('path',{class:'edge','stroke-dasharray':styles[e.type],'marker-end':'url(#arrow)'},edgeLayer),hit=el('path',{class:'hit'},edgeLayer);hover(hit,`${e.id??'Relationship'} · ${e.type}\n${s} → ${t}\nSources: ${e.sources.join(', ')}\nTargets: ${e.targets.join(', ')}${e.analysis?'\n\n'+e.analysis:''}`);links.push({source:byId.get(s),target:byId.get(t),line,hit,bend:order*35});}
+for(const e of g.edges)for(const s of e.sources)for(const t of e.targets){const key=JSON.stringify([s,t].sort()),order=pairs.get(key)??0;pairs.set(key,order+1);const line=el('path',{class:'edge','stroke-dasharray':styles[e.type],'marker-end':'url(#arrow)'},edgeLayer),hit=el('path',{class:'hit'},edgeLayer);hover(hit,`${e.caseLabel}\n${e.id??'Relationship'} · ${e.type}\n${s} → ${t}\nSources: ${e.sources.join(', ')}\nTargets: ${e.targets.join(', ')}${e.analysis?'\n\n'+e.analysis:''}`);links.push({source:byId.get(s),target:byId.get(t),line,hit,bend:order*35});}
 for (const n of nodes) {
     n.element = el('g', {class:'node', role:'button', 'aria-pressed':'false'}, nodeLayer);
     const circle = el('circle', {r:25, fill:colors[n.justice]}, n.element);
     n.shadeColor = getComputedStyle(circle).fill;
-    el('text', {'text-anchor':'middle', 'dominant-baseline':'central'}, n.element).textContent = n.id;
-    hover(n.element, `${n.id} · ${n.justice}${n.position?' · '+n.position:''}\n\n${n.claim}`);
+    el('text', {'text-anchor':'middle', 'dominant-baseline':'central'}, n.element).textContent = indices.length>1?`${n.caseIndex+1}·${n.originalId}`:n.originalId;
+    hover(n.element, `${n.caseLabel}\n${n.originalId} · ${n.justice}${n.position?' · '+n.position:''}\n\n${n.claim}`);
     n.element.addEventListener('pointerenter', () => { hovered=n; highlight(); });
     n.element.addEventListener('pointerleave', () => { hovered=null; highlight(); });
     n.element.addEventListener('focus', () => { hovered=n; highlight(); });
@@ -357,9 +398,50 @@ $('budget').max=nodes.length;
 $('budget').value=Math.min(Number($('budget').value),nodes.length);
 $('distance').max = Math.max(0, nodes.length-1);
 $('distance').value = Math.min(Number($('distance').value), Number($('distance').max));
-$('count').textContent=`${nodes.length} claims · ${g.edges.length} relationships · ${links.length} connections`;resetLayout();highlight();renderSelectedClaims();}
-cases.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c.name??c.case_name??`Case ${i+1}`;$('cases').append(o);});
-$('cases').addEventListener('change',e=>render(Number(e.target.value)));$('fit').onclick=fit;$('layout').onclick=resetLayout;$('in').onclick=()=>zoom(.8);$('out').onclick=()=>zoom(1.25);
+$('count').textContent=`${indices.length} selected cases · ${nodes.length} claims · ${g.edges.length} relationships · ${links.length} connections`;resetLayout();highlight();renderSelectedClaims();if(!indices.length) $('selected-claims').textContent='Select one or more cases above.';}
+const caseYears=cases.map(c=>c.time===undefined || c.time===null || String(c.time).trim()==='' ? null : Number(c.time));
+const datedYears=caseYears.filter(year=>year!==null && Number.isFinite(year));
+const firstYear=datedYears.length ? Math.floor(Math.min(...datedYears)/10)*10 : 2000;
+const lastYear=datedYears.length ? Math.max(firstYear+10,Math.ceil(Math.max(...datedYears)/10)*10) : 2020;
+const infinityYear=lastYear+1;
+for(const id of ['time-start','time-end']) {
+    $(id).min=firstYear; $(id).max=id==='time-end'?infinityYear:lastYear;
+}
+$('time-start').value=firstYear; $('time-end').value=infinityYear;
+function filterCases(changed) {
+    let start=Number($('time-start').value), end=Number($('time-end').value);
+    if(start>end) {
+        if(changed==='time-start') $('time-end').value=end=start;
+        else $('time-start').value=start=end;
+    }
+    const upper=end===infinityYear?Infinity:end;
+    $('time-start-label').textContent=start;
+    $('time-end-label').textContent=upper===Infinity?'∞':end;
+    $('time-start').setAttribute('aria-valuetext',String(start));
+    $('time-end').setAttribute('aria-valuetext',upper===Infinity?'Infinity':String(end));
+    const previous=new Set(selectedCaseIndices());
+    const available=new Set([...$('cases').querySelectorAll('input')].map(input=>Number(input.value)));
+    $('cases').replaceChildren();
+    let count=0;
+    cases.forEach((c,i)=>{
+        const year=caseYears[i], dated=year!==null && Number.isFinite(year);
+        if(dated ? year<start || year>upper : start!==firstYear || upper!==Infinity) return;
+        count++;
+        const label=document.createElement('label'), input=document.createElement('input');
+        input.type='checkbox'; input.value=i;
+        input.checked=previous.has(i) || !available.has(i);
+        label.append(input,document.createTextNode(`${i+1}. ${c.name??c.case_name??`Case ${i+1}`} (${dated?year:'undated'})`));
+        $('cases').append(label);
+    });
+    $('time-status').textContent=`${count} of ${cases.length} cases in range (inclusive)`;
+    render();
+    if(!count) {
+        $('heading').textContent='No cases in this time range';
+        $('selected-claims').textContent='Adjust the time range to select cases.';
+    }
+}
+for(const id of ['time-start','time-end']) $(id).addEventListener('input',()=>filterCases(id));
+$('cases').addEventListener('change',()=>render());$('fit').onclick=fit;$('layout').onclick=resetLayout;$('in').onclick=()=>zoom(.8);$('out').onclick=()=>zoom(1.25);
 svg.addEventListener('wheel',event=>{event.preventDefault();zoom(event.deltaY>0?1.1:1/1.1,point(event));},{passive:false});
 svg.addEventListener('pointerdown',event=>{if(event.button!==0)return;drag={start:point(event),box:{...box}};svg.setPointerCapture(event.pointerId);});
 svg.addEventListener('pointermove',event=>{if(!drag)return;const p=point(event);if(drag.node){if(Math.hypot(event.clientX-drag.clientX,event.clientY-drag.clientY)>4)drag.moved=true;if(drag.moved){drag.node.x=p.x+drag.offsetX;drag.node.y=p.y+drag.offsetY;update();}}else{box.x-=p.x-drag.start.x;box.y-=p.y-drag.start.y;applyBox();}});
@@ -407,10 +489,10 @@ function showModelResult(result, solution) {
     if(solution) resultParagraph('The objective is total active claims. These sampled heuristics do not guarantee optimality; the greedy approximation guarantee requires submodular influence and accurate spread estimates.');
 }
 async function runModel(action) {
-    if(!modelAPI || modelBusy) return;
+    if(!modelAPI || modelBusy || !selectedCaseIndices().length) return;
     const version=modelVersion;
     try {
-        const request={action,case_index:Number($('cases').value),selected_nodes:[...selected].map(n=>n.id),
+        const request={action,case_indices:selectedCaseIndices(),selected_nodes:[...selected].map(n=>n.id),
             random_seed:modelNumber('random-seed',true),justice_threshold:modelNumber('justice-cutoff')};
         if(action==='optimize') Object.assign(request,{budget:modelNumber('budget',true),method:$('method').value,
             simulations:modelNumber('simulations',true),trials:modelNumber('trials',true)});
@@ -426,8 +508,21 @@ async function runModel(action) {
         }
         modelResult=payload.result; showModelResult(payload.result,payload.solution); highlight();
         $('model-status').textContent='Model results ready.';
+        $('model-dialog').close();
     } catch(error) {if(version===modelVersion) $('model-status').textContent=error.message;}
-    finally {modelBusy=false; $('simulate').disabled=!modelAPI; $('optimize').disabled=!modelAPI;}
+    finally {modelBusy=false; $('simulate').disabled=!modelAPI || !selectedCaseIndices().length; $('optimize').disabled=!modelAPI || !selectedCaseIndices().length;}
+}
+for(const [button,dialog] of [['open-cases','case-dialog'],['open-model','model-dialog']]) {
+    $(button).onclick=()=>{tip.style.display='none'; $(dialog).showModal();};
+}
+for(const button of document.querySelectorAll('[data-close]'))
+    button.addEventListener('click',()=>$(button.dataset.close).close());
+for(const id of ['case-dialog','model-dialog']) {
+    $(id).addEventListener('click',event=>{
+        const bounds=$(id).getBoundingClientRect();
+        if(event.target===$(id) && (event.clientX<bounds.left || event.clientX>bounds.right ||
+            event.clientY<bounds.top || event.clientY>bounds.bottom)) $(id).close();
+    });
 }
 $('simulate').onclick=()=>runModel('simulate');
 $('optimize').onclick=()=>runModel('optimize');
@@ -436,20 +531,37 @@ for(const id of ['budget','method','simulations','trials','random-seed','justice
 $('simulate').disabled=!modelAPI; $('optimize').disabled=!modelAPI;
 $('method').addEventListener('change',()=>{$('trials').disabled=$('method').value!=='random_search';});
 $('trials').disabled=true;
-render(0);
+filterCases();
 </script></body></html>'''
 
 
 
 def model_request(cases: list[dict], request: dict) -> dict:
     """Dispatch the browser's request to the Python model and heuristics."""
-    index = request["case_index"]
-    if isinstance(index, bool) or not isinstance(index, int) or not 0 <= index < len(cases):
-        raise ValueError("Invalid case index")
+    indices = request.get("case_indices", [request.get("case_index")])
+    if (not isinstance(indices, list) or not indices or
+            any(isinstance(index, bool) or not isinstance(index, int) or
+                not 0 <= index < len(cases) for index in indices) or
+            len(set(indices)) != len(indices)):
+        raise ValueError("Invalid case indices")
+    if "case_indices" in request:
+        graph = {"nodes": [], "edges": []}
+        for index in indices:
+            prefix = f"{index}:"
+            information = cases[index]["information"]
+            graph["nodes"].extend({**node, "id": prefix + node["id"]}
+                                  for node in information["nodes"])
+            graph["edges"].extend({**edge,
+                "sources": [prefix + node for node in edge["sources"]],
+                "targets": [prefix + node for node in edge["targets"]]}
+                for edge in information["edges"])
+        model_data = graph
+    else:
+        model_data = cases[indices[0]]
     seed = request.get("random_seed", 7)
     if isinstance(seed, bool) or not isinstance(seed, int):
         raise ValueError("Random seed must be an integer")
-    model = GeneralThresholdModel(cases[index])
+    model = GeneralThresholdModel(model_data)
     options = {"random_seed": seed, "justice_threshold": request.get("justice_threshold", 0.5)}
     if request["action"] == "simulate":
         return {"result": model.simulate(request["selected_nodes"], **options)}
