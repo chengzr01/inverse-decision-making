@@ -1,0 +1,327 @@
+[
+    {
+        "id": 1,
+        "name": "Obergefell v. Hodges",
+        "agents": [
+            {
+                "id": 1,
+                "type": "Petitioners",
+                "description": "Fourteen same-sex couples and two men whose partners had died.",
+                "utility": "Marriage licenses or recognition of marriages performed elsewhere."
+            },
+            {
+                "id": 2,
+                "type": "Respondents",
+                "description": "State officials from Michigan, Kentucky, Ohio, and Tennessee.",
+                "utility": "Preservation of the states’ opposite-sex marriage restrictions."
+            },
+            {
+                "id": 3,
+                "type": "Supreme Court",
+                "description": "The highest court in the United States.",
+                "utility": "To determine the constitutionality of same-sex marriage bans."
+            }
+        ],
+        "background": {
+            "Identification": "Case name, originating court, docket number, argument and decision dates; a footnote identifies the consolidated cases.",
+            "Held": "States must license same-sex marriages and recognize those lawfully performed out of state.",
+            "Background": "Marriage’s history and development, petitioners’ experiences, and changes in the legal treatment of gays and lesbians.",
+            "Licensing": "Explains why the Fourteenth Amendment requires states to allow same-sex couples to marry.",
+            "Recognition": "Explains why states must recognize lawful out-of-state same-sex marriages.",
+            "Disposition and lineup": "Identifies the reversed judgment and lists the majority and dissenting justices."
+        },
+        "information": {
+            "nodes": [
+                {
+                    "id": "M1",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Marriage is a fundamental constitutional right."
+                },
+                {
+                    "id": "M2",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "History guides the identification of fundamental rights without conclusively limiting their scope."
+                },
+                {
+                    "id": "M3",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Marriage precedents require examining the right to marry generally, rather than defining a separate right for each excluded group."
+                },
+                {
+                    "id": "M4",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Choosing whom to marry is an exercise of individual autonomy."
+                },
+                {
+                    "id": "M5",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Marriage protects a uniquely important two-person commitment."
+                },
+                {
+                    "id": "M6",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Marriage provides protection and stability for children and families."
+                },
+                {
+                    "id": "M7",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Marriage is a central gateway to legal rights, benefits, and responsibilities."
+                },
+                {
+                    "id": "M8",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Each of these four justifications applies to same-sex couples."
+                },
+                {
+                    "id": "M9",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Exclusion from marriage imposes unequal legal treatment and subordinate status on same-sex couples."
+                },
+                {
+                    "id": "M10",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "Due process and equal protection reinforce one another in establishing the constitutional violation."
+                },
+                {
+                    "id": "M11",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "A person need not await democratic approval to obtain protection of a fundamental right."
+                },
+                {
+                    "id": "M12",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "States must permit same-sex couples to marry."
+                },
+                {
+                    "id": "M13",
+                    "justice": "Kennedy",
+                    "position": "majority",
+                    "claim": "States cannot reject an otherwise lawful out-of-state marriage because the spouses are of the same sex."
+                },
+                {
+                    "id": "R1",
+                    "justice": "Roberts",
+                    "position": "dissent",
+                    "claim": "Earlier marriage decisions did not alter marriage's opposite-sex definition."
+                },
+                {
+                    "id": "R2",
+                    "justice": "Roberts",
+                    "position": "dissent",
+                    "claim": "Identifying unenumerated fundamental rights requires constraints rooted in history and tradition."
+                },
+                {
+                    "id": "R3",
+                    "justice": "Roberts",
+                    "position": "dissent",
+                    "claim": "The majority does not adequately justify its conclusion through conventional equal-protection analysis."
+                },
+                {
+                    "id": "R4",
+                    "justice": "Roberts",
+                    "position": "dissent",
+                    "claim": "The majority does not adequately explain why its reasoning would exclude plural marriage."
+                },
+                {
+                    "id": "R5",
+                    "justice": "Roberts",
+                    "position": "dissent",
+                    "claim": "The desirability of marriage equality does not establish judicial authority to require it."
+                },
+                {
+                    "id": "S1",
+                    "justice": "Scalia",
+                    "position": "dissent",
+                    "claim": "The original understanding of the Fourteenth Amendment did not prohibit opposite-sex marriage laws."
+                },
+                {
+                    "id": "S2",
+                    "justice": "Scalia",
+                    "position": "dissent",
+                    "claim": "Judicial imposition of a constitutional answer without sufficient constitutional grounding displaces democratic self-government."
+                },
+                {
+                    "id": "T1",
+                    "justice": "Thomas",
+                    "position": "dissent",
+                    "claim": "The Due Process Clause does not authorize the creation of substantive rights."
+                },
+                {
+                    "id": "T2",
+                    "justice": "Thomas",
+                    "position": "dissent",
+                    "claim": "Even assuming substantive due process, constitutional liberty protects against government restraint rather than guaranteeing government benefits."
+                },
+                {
+                    "id": "T3",
+                    "justice": "Thomas",
+                    "position": "dissent",
+                    "claim": "Denial of marriage recognition does not constitute the deprivation of liberty asserted here."
+                },
+                {
+                    "id": "T4",
+                    "justice": "Thomas",
+                    "position": "dissent",
+                    "claim": "Human dignity is inherent rather than conferred by government."
+                },
+                {
+                    "id": "A1",
+                    "justice": "Alito",
+                    "position": "dissent",
+                    "claim": "A right to same-sex marriage lacks the historical roots required for fundamental-right protection."
+                },
+                {
+                    "id": "A2",
+                    "justice": "Alito",
+                    "position": "dissent",
+                    "claim": "Encouraging procreation within stable unions supplies a rational justification for opposite-sex marriage laws."
+                },
+                {
+                    "id": "A3",
+                    "justice": "Alito",
+                    "position": "dissent",
+                    "claim": "States should retain authority to choose between competing understandings of marriage."
+                }
+            ],
+            "edges": [
+                {
+                    "id": "E1",
+                    "sources": [
+                        "M4",
+                        "M5",
+                        "M6",
+                        "M7",
+                        "M8"
+                    ],
+                    "targets": [
+                        "M12"
+                    ],
+                    "type": "support",
+                    "analysis": "The four reasons for protecting marriage jointly support inclusion. The majority does not make procreation alone the condition for exercising the right."
+                },
+                {
+                    "id": "E2",
+                    "sources": [
+                        "M3"
+                    ],
+                    "targets": [
+                        "R1",
+                        "A1"
+                    ],
+                    "type": "dispute",
+                    "analysis": "The disagreement concerns what must have historical support: marriage as a general right, or its application to same-sex couples. This choice determines which historical evidence matters."
+                },
+                {
+                    "id": "E3",
+                    "sources": [
+                        "M2"
+                    ],
+                    "targets": [
+                        "R2",
+                        "S1"
+                    ],
+                    "type": "challenge",
+                    "analysis": "The dissenters challenge the method by which enduring constitutional principles produce a previously unrecognized application. They need not deny marriage's importance to contest that inference."
+                },
+                {
+                    "id": "E4",
+                    "sources": [
+                        "M4",
+                        "M7"
+                    ],
+                    "targets": [
+                        "T2",
+                        "T3"
+                    ],
+                    "type": "challenge",
+                    "analysis": "Thomas disputes whether denial of civil recognition counts as a liberty deprivation. If his premise is accepted, evidence that marriage provides valuable benefits cannot by itself establish the asserted due-process right."
+                },
+                {
+                    "id": "E5",
+                    "sources": [
+                        "M8",
+                        "M9"
+                    ],
+                    "targets": [
+                        "A2"
+                    ],
+                    "type": "alternative",
+                    "analysis": "Alito offers a reason for treating the couples differently. The majority's discussion of nonprocreative marriages and existing same-sex families challenges the adequacy of that distinction."
+                },
+                {
+                    "id": "E6",
+                    "sources": [
+                        "M11"
+                    ],
+                    "targets": [
+                        "R5",
+                        "S2",
+                        "A3"
+                    ],
+                    "type": "dispute",
+                    "analysis": "Both positions depend on the prior rights analysis. Judicial intervention is obligatory if a constitutional right is violated; democratic discretion remains if the Constitution permits the restriction."
+                },
+                {
+                    "id": "E7",
+                    "sources": [
+                        "M4",
+                        "M5",
+                        "M6"
+                    ],
+                    "targets": [
+                        "R4"
+                    ],
+                    "type": "challenge",
+                    "analysis": "Roberts tests how far the majority's reasons extend. This questions the reasoning's boundaries; it does not independently demonstrate that same-sex couples may constitutionally be excluded."
+                },
+                {
+                    "id": "E8",
+                    "sources": [
+                        "M12"
+                    ],
+                    "targets": [
+                        "M13"
+                    ],
+                    "type": "dependence",
+                    "analysis": "Once states must allow same-sex marriage, its same-sex character cannot justify refusing interstate recognition. Defeating M12 would remove this particular route to M13, but would not alone establish that recognition bans are valid."
+                }
+            ]
+        },
+        "decisions": {
+            "licensing": {
+                "claim_id": "M12",
+                "holding": "The Fourteenth Amendment requires states to license marriages between two people of the same sex."
+            },
+            "recognition": {
+                "claim_id": "M13",
+                "holding": "States must recognize lawful same-sex marriages performed out of state.",
+                "relationship_to_licensing": "Recognition follows as a consequence of the licensing holding."
+            },
+            "disposition": {
+                "reviewed_court": "Sixth Circuit",
+                "result": "Reversed"
+            },
+            "opinions_represented": {
+                "majority_author": "Kennedy",
+                "dissenting_authors": [
+                    "Roberts",
+                    "Scalia",
+                    "Thomas",
+                    "Alito"
+                ]
+            }
+        }
+    }
+]
